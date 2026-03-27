@@ -1,0 +1,22 @@
+{
+    "name": "Construction Operations Odoo",
+    "summary": "Modulo Odoo para obras, contratistas, actas y aprobaciones en operaciones de construccion.",
+    "version": "16.0.1.0.0",
+    "category": "Construction",
+    "author": "Desarrollo propio",
+    "license": "LGPL-3",
+    "depends": ["base", "mail"],
+    "data": [
+        "security/security.xml",
+        "security/ir.model.access.csv",
+        "data/sequence.xml",
+        "views/obra_views.xml",
+        "views/contratista_views.xml",
+        "views/acta_views.xml",
+        "wizard/acta_import_wizard_views.xml",
+        "views/menu_views.xml",
+    ],
+    "demo": [],
+    "installable": True,
+    "application": True,
+}

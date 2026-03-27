@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="module_category_construction_operations" model="ir.module.category">
+        <field name="name">Construction Operations</field>
+        <field name="sequence">28</field>
+    </record>
+
+    <record id="group_construction_direction" model="res.groups">
+        <field name="name">Direccion</field>
+        <field name="category_id" ref="construction_operations_odoo.module_category_construction_operations"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_construction_accounting" model="res.groups">
+        <field name="name">Contabilidad</field>
+        <field name="category_id" ref="construction_operations_odoo.module_category_construction_operations"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="group_construction_supervisor" model="res.groups">
+        <field name="name">Supervisor</field>
+        <field name="category_id" ref="construction_operations_odoo.module_category_construction_operations"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+
+    <record id="rule_construction_site_supervisor" model="ir.rule">
+        <field name="name">Obras visibles para supervisor</field>
+        <field name="model_id" ref="model_construction_site"/>
+        <field name="groups" eval="[(4, ref('construction_operations_odoo.group_construction_supervisor'))]"/>
+        <field name="domain_force">['|', ('supervisor_user_id', '=', user.id), ('create_uid', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <record id="rule_construction_record_supervisor" model="ir.rule">
+        <field name="name">Actas visibles para supervisor</field>
+        <field name="model_id" ref="model_construction_contractor_record"/>
+        <field name="groups" eval="[(4, ref('construction_operations_odoo.group_construction_supervisor'))]"/>
+        <field name="domain_force">['|', ('site_id.supervisor_user_id', '=', user.id), ('created_by_id', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+    <record id="rule_construction_record_line_supervisor" model="ir.rule">
+        <field name="name">Lineas visibles para supervisor</field>
+        <field name="model_id" ref="model_construction_contractor_record_line"/>
+        <field name="groups" eval="[(4, ref('construction_operations_odoo.group_construction_supervisor'))]"/>
+        <field name="domain_force">['|', ('record_id.site_id.supervisor_user_id', '=', user.id), ('record_id.created_by_id', '=', user.id)]</field>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+</odoo>

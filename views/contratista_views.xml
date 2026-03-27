@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_construction_contractor_tree" model="ir.ui.view">
+        <field name="name">construction.contractor.tree</field>
+        <field name="model">construction.contractor</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="vat"/>
+                <field name="email"/>
+                <field name="phone"/>
+                <field name="record_count"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_construction_contractor_form" model="ir.ui.view">
+        <field name="name">construction.contractor.form</field>
+        <field name="model">construction.contractor</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="action_view_records" class="oe_stat_button" icon="fa-file-text-o">
+                            <field name="record_count" string="Actas" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="vat"/>
+                            <field name="email"/>
+                            <field name="phone"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                            <field name="notes"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_construction_contractor_search" model="ir.ui.view">
+        <field name="name">construction.contractor.search</field>
+        <field name="model">construction.contractor</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="vat"/>
+                <field name="email"/>
+                <filter name="filter_active" string="Activos" domain="[('active', '=', True)]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_construction_contractor" model="ir.actions.act_window">
+        <field name="name">Contratistas</field>
+        <field name="res_model">construction.contractor</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_construction_contractor_search"/>
+    </record>
+</odoo>

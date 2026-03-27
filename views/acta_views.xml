@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_construction_record_search" model="ir.ui.view">
+        <field name="name">construction.contractor.record.search</field>
+        <field name="model">construction.contractor.record</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="site_id"/>
+                <field name="contractor_id"/>
+                <field name="state"/>
+                <field name="date"/>
+                <filter name="filter_draft" string="Borrador" domain="[('state', '=', 'draft')]"/>
+                <filter name="filter_sent" string="Enviado" domain="[('state', '=', 'sent')]"/>
+                <filter name="filter_approved" string="Aprobado" domain="[('state', '=', 'approved')]"/>
+                <filter name="filter_rejected" string="Rechazado" domain="[('state', '=', 'rejected')]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_site" string="Obra" context="{'group_by': 'site_id'}"/>
+                    <filter name="group_contractor" string="Contratista" context="{'group_by': 'contractor_id'}"/>
+                    <filter name="group_state" string="Estado" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_construction_record_tree" model="ir.ui.view">
+        <field name="name">construction.contractor.record.tree</field>
+        <field name="model">construction.contractor.record</field>
+        <field name="arch" type="xml">
+            <tree decoration-success="state == 'approved'" decoration-danger="state == 'rejected'" decoration-info="state == 'sent'">
+                <field name="name"/>
+                <field name="date"/>
+                <field name="site_id"/>
+                <field name="contractor_id"/>
+                <field name="created_by_id"/>
+                <field name="total_amount"/>
+                <field name="state" widget="badge"/>
+                <field name="approved_at"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_construction_record_form" model="ir.ui.view">
+        <field name="name">construction.contractor.record.form</field>
+        <field name="model">construction.contractor.record</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_send" string="Enviar" type="object" class="btn-primary" states="draft" groups="construction_operations_odoo.group_construction_supervisor,construction_operations_odoo.group_construction_direction"/>
+                    <button name="action_approve" string="Aprobar" type="object" class="btn-primary" states="sent,draft" groups="construction_operations_odoo.group_construction_direction,construction_operations_odoo.group_construction_accounting"/>
+                    <button name="action_reject" string="Rechazar" type="object" states="sent,draft" groups="construction_operations_odoo.group_construction_direction,construction_operations_odoo.group_construction_accounting"/>
+                    <button name="action_reset_to_draft" string="Volver a borrador" type="object" states="approved,rejected,sent"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,sent,approved,rejected"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" readonly="1"/>
+                            <field name="date"/>
+                            <field name="site_id"/>
+                            <field name="contractor_id"/>
+                        </group>
+                        <group>
+                            <field name="currency_id"/>
+                            <field name="created_by_id" readonly="1"/>
+                            <field name="total_amount" readonly="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lineas">
+                            <field name="line_ids">
+                                <tree editable="bottom">
+                                    <field name="concept"/>
+                                    <field name="subtotal"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Auditoria">
+                            <group>
+                                <group>
+                                    <field name="approved_by_id" readonly="1"/>
+                                    <field name="approved_at" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="rejected_by_id" readonly="1"/>
+                                    <field name="rejected_at" readonly="1"/>
+                                </group>
+                            </group>
+                            <field name="rejection_reason" readonly="1"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_construction_record" model="ir.actions.act_window">
+        <field name="name">Actas de contratista</field>
+        <field name="res_model">construction.contractor.record</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_construction_record_search"/>
+        <field name="context">{'search_default_filter_draft': 1}</field>
+    </record>
+</odoo>

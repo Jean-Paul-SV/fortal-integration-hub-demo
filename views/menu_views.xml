@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_construction_import_wizard" model="ir.actions.act_window">
+        <field name="name">Importar actas</field>
+        <field name="res_model">construction.contractor.import.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_construction_root" name="Construction Operations" sequence="10" groups="construction_operations_odoo.group_construction_direction,construction_operations_odoo.group_construction_accounting,construction_operations_odoo.group_construction_supervisor"/>
+    <menuitem id="menu_construction_catalogs" name="Catalogos" parent="menu_construction_root" sequence="10"/>
+    <menuitem id="menu_construction_operations" name="Operaciones" parent="menu_construction_root" sequence="20"/>
+
+    <menuitem id="menu_construction_site" name="Obras" parent="menu_construction_catalogs" action="action_construction_site" sequence="10"/>
+    <menuitem id="menu_construction_contractor" name="Contratistas" parent="menu_construction_catalogs" action="action_construction_contractor" sequence="20"/>
+    <menuitem id="menu_construction_record" name="Actas" parent="menu_construction_operations" action="action_construction_record" sequence="10"/>
+    <menuitem id="menu_construction_import" name="Importar actas CSV" parent="menu_construction_operations" action="action_construction_import_wizard" sequence="20"/>
+</odoo>
